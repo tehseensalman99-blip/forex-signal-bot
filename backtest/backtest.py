@@ -57,9 +57,11 @@ def load_m1(paths):
         frames.append(df[["open", "high", "low", "close"]].astype(float))
     m1 = pd.concat(frames).sort_index()
     m1 = m1[~m1.index.duplicated(keep="first")]
-    # Dukascopy weekend par flat (volume 0) candles deta hai — unhein hata do
-    flat = (m1["high"] == m1["low"]) & (m1["open"] == m1["close"])
-    m1 = m1[~(flat & (m1.index.dayofweek >= 5))]
+    # Market band ka waqt hata do (kuch providers weekend par bhi kachi prices dete hain):
+    # Friday 21:00 UTC se Sunday 21:00 UTC tak forex/gold band hota hai
+    dow, hr = m1.index.dayofweek, m1.index.hour
+    closed = (dow == 5) | ((dow == 6) & (hr < 21)) | ((dow == 4) & (hr >= 21))
+    m1 = m1[~closed]
     return m1
 
 
