@@ -32,6 +32,9 @@ for sym, sp in SPREAD.items():
         st["longs"] = int((trades.side == "LONG").sum())
         st["shorts"] = int((trades.side == "SHORT").sum())
     st["open_trade_at_end"] = bool(open_t)
+    w = bars[(bars.index >= START) & (bars.index < END)]
+    st["data_bars_in_period"] = int(len(w))
+    st["data_first_last"] = [str(w.index.min()), str(w.index.max())] if len(w) else None
     out["pairs"][sym] = st
     if not trades.empty:
         all_tr.append(trades)
