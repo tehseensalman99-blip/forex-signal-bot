@@ -1,0 +1,58 @@
+{
+  "strategy": "s1_trend_pullback",
+  "description": "Trend Pullback: EMA50>EMA200 trend, RSI(14) 40/60 reclaim, close vs EMA21, London+NY session, SL 1.5xATR / TP 3xATR",
+  "params": {},
+  "start": "2026-09-28",
+  "end": "2026-10-28",
+  "generated_utc": "2026-10-27T21:18:09.994646+00:00",
+  "pairs": {
+    "XAU/USD": {
+      "trades": 2,
+      "wins": 0,
+      "losses": 2,
+      "win_rate": 0.0,
+      "total_R": -2.06,
+      "avg_R": -1.028,
+      "profit_factor": 0.0,
+      "return_pct": -2.0,
+      "max_dd_pct": -2.0,
+      "max_losing_streak": 2,
+      "avg_hours_in_trade": 1.5,
+      "net_usd_on_10k": -200.0,
+      "longs": 2,
+      "shorts": 0,
+      "open_trade_at_end": false
+    },
+    "EUR/USD": {
+      "trades": 8,
+      "wins": 0,
+      "losses": 8,
+      "win_rate": 0.0,
+      "total_R": -8.39,
+      "avg_R": -1.049,
+      "profit_factor": 0.0,
+      "return_pct": -8.1,
+      "max_dd_pct": -8.1,
+      "max_losing_streak": 8,
+      "avg_hours_in_trade": 3.3,
+      "net_usd_on_10k": -810.0,
+      "longs": 2,
+      "shorts": 6,
+      "open_trade_at_end": false
+    }
+  },
+  "combined": {
+    "trades": 10,
+    "wins": 0,
+    "losses": 10,
+    "win_rate": 0.0,
+    "total_R": -10.45,
+    "avg_R": -1.045,
+    "profit_factor": 0.0,
+    "return_pct": -10.0,
+    "max_dd_pct": -10.0,
+    "max_losing_streak": 10,
+    "avg_hours_in_trade": 3.0,
+    "net_usd_on_10k": -1000.0
+  }
+}
