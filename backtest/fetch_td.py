@@ -9,7 +9,9 @@ import urllib.request
 
 KEY = os.environ["TWELVEDATA_API_KEY"]
 SYMBOLS = ["XAU/USD", "EUR/USD"]
-START = dt.date(2024, 1, 1)
+# Test START se 25 din pehle se data lo, taake EMA 200 waghera "garam" ho jayein
+START = dt.date.fromisoformat(os.environ.get("START", "2024-01-25")) - dt.timedelta(days=25)
+END = dt.date.fromisoformat(os.environ["END"]) if os.environ.get("END") else None
 CHUNK_DAYS = 45          # 45 din x 96 candles = 4320 (< 5000 limit)
 PAUSE = 9                # free plan: 8 requests / minute
 os.makedirs("data", exist_ok=True)
@@ -34,6 +36,8 @@ for sym in SYMBOLS:
     rows = {}
     a = START
     today = dt.datetime.now(dt.timezone.utc).date()
+    if END:
+        today = min(today, END)
     while a <= today:
         b = min(a + dt.timedelta(days=CHUNK_DAYS), today + dt.timedelta(days=1))
         vals = get(dict(symbol=sym, interval="15min", start_date=f"{a} 00:00:00",
