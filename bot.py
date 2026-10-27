@@ -23,8 +23,8 @@ from email.mime.text import MIMEText
 # ===================== SETTINGS (yahan change karo) =====================
 SYMBOLS = {
     #  symbol      SL %          TP %          price decimals
-    "XAU/USD": {"sl_pct": 0.40, "tp_pct": 0.80, "digits": 2},
-    "EUR/USD": {"sl_pct": 0.20, "tp_pct": 0.40, "digits": 5},
+    "XAU/USD": {"sl_pct": 0.80, "tp_pct": 1.60, "digits": 2},
+    "EUR/USD": {"sl_pct": 0.80, "tp_pct": 1.60, "digits": 5},
 }
 INTERVAL = "15min"
 CANDLE_MINUTES = 15
