@@ -1,0 +1,68 @@
+{
+  "strategy": "s0_ema_cross",
+  "description": "EMA 9/21 cross + EMA200 filter, SL 0.8% / TP 1.6% (live bot)",
+  "params": {},
+  "start": "2026-09-28",
+  "end": "2026-10-28",
+  "generated_utc": "2026-10-27T21:23:04.799055+00:00",
+  "pairs": {
+    "XAU/USD": {
+      "trades": 15,
+      "wins": 2,
+      "losses": 13,
+      "win_rate": 13.3,
+      "total_R": -9.04,
+      "avg_R": -0.603,
+      "profit_factor": 0.31,
+      "return_pct": -8.7,
+      "max_dd_pct": -9.6,
+      "max_losing_streak": 10,
+      "avg_hours_in_trade": 32.5,
+      "net_usd_on_10k": -870.0,
+      "longs": 5,
+      "shorts": 10,
+      "open_trade_at_end": false,
+      "data_bars_in_period": 2102,
+      "data_first_last": [
+        "2026-09-28 00:00:00+00:00",
+        "2026-10-27 21:15:00+00:00"
+      ]
+    },
+    "EUR/USD": {
+      "trades": 1,
+      "wins": 1,
+      "losses": 0,
+      "win_rate": 100.0,
+      "total_R": 2.0,
+      "avg_R": 2.0,
+      "profit_factor": null,
+      "return_pct": 2.0,
+      "max_dd_pct": 0.0,
+      "max_losing_streak": 0,
+      "avg_hours_in_trade": 165.2,
+      "net_usd_on_10k": 200.0,
+      "longs": 0,
+      "shorts": 1,
+      "open_trade_at_end": true,
+      "data_bars_in_period": 2102,
+      "data_first_last": [
+        "2026-09-28 00:00:00+00:00",
+        "2026-10-27 21:15:00+00:00"
+      ]
+    }
+  },
+  "combined": {
+    "trades": 16,
+    "wins": 3,
+    "losses": 13,
+    "win_rate": 18.8,
+    "total_R": -7.04,
+    "avg_R": -0.44,
+    "profit_factor": 0.46,
+    "return_pct": -6.9,
+    "max_dd_pct": -7.8,
+    "max_losing_streak": 5,
+    "avg_hours_in_trade": 40.8,
+    "net_usd_on_10k": -690.0
+  }
+}
