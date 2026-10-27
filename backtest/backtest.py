@@ -169,6 +169,63 @@ def run(m1, cfg: Cfg, start=None, end=None):
     return pd.DataFrame(closed), [t for t in trades if t.get("open_trade")]
 
 
+def simulate(m1, sig, spread, symbol, start=None, end=None):
+    """Generic: sig = DataFrame(index=15m bar start, side, sl, tp).
+    Signal bar close par entry; exit SL/TP data (m1 ya 15m) se; ek waqt mein ek trade."""
+    m1_t = m1.index.tz_convert(None).to_numpy()
+    bar_len = pd.Series(m1.index[:1000]).diff().median()
+    m1_o, m1_h, m1_l = m1["open"].to_numpy(), m1["high"].to_numpy(), m1["low"].to_numpy()
+    closes = to_tf(m1)["close"].reindex(sig.index)
+    s = sig[sig["side"] != 0].dropna()
+    trades, open_trades = [], []
+    busy_until = None
+    for t_bar, row in s.iterrows():
+        t_sig = t_bar + pd.Timedelta(TF)
+        if start is not None and t_sig < start:
+            continue
+        if end is not None and t_sig >= end:
+            break
+        if busy_until is not None and t_sig < busy_until:
+            continue
+        side = int(row.side)
+        ref, sl, tp = float(closes.loc[t_bar]), float(row.sl), float(row.tp)
+        entry = ref + spread if side == 1 else ref
+        j0 = np.searchsorted(m1_t, t_sig.tz_convert(None).to_datetime64(), side="left")
+        if j0 >= len(m1_t):
+            open_trades.append(dict(side=side, entry_time=t_sig))
+            break
+        if side == 1:
+            hit_sl, hit_tp = m1_l[j0:] <= sl, m1_h[j0:] >= tp
+        else:
+            hit_sl, hit_tp = (m1_h[j0:] + spread) >= sl, (m1_l[j0:] + spread) <= tp
+        k_sl = int(np.argmax(hit_sl)) if hit_sl.any() else None
+        k_tp = int(np.argmax(hit_tp)) if hit_tp.any() else None
+        if k_sl is None and k_tp is None:
+            open_trades.append(dict(side=side, entry_time=t_sig))
+            break
+        if k_tp is None or (k_sl is not None and k_sl <= k_tp):
+            k, result, lvl = k_sl, "SL", sl
+        else:
+            k, result, lvl = k_tp, "TP", tp
+        j = j0 + k
+        o_eff = m1_o[j] if side == 1 else m1_o[j] + spread
+        if j == j0:
+            fill = lvl
+        elif result == "SL":
+            fill = min(lvl, o_eff) if side == 1 else max(lvl, o_eff)
+        else:
+            fill = max(lvl, o_eff) if side == 1 else min(lvl, o_eff)
+        pnl = (fill - entry) * side
+        risk = abs(ref - sl)
+        exit_time = pd.Timestamp(m1_t[j]).tz_localize("UTC") + bar_len
+        trades.append(dict(symbol=symbol, side="LONG" if side == 1 else "SHORT",
+                           entry_time=t_sig, exit_time=exit_time, ref=ref, entry=entry,
+                           sl=sl, tp=tp, exit=fill, result=result, pnl_price=pnl,
+                           R=pnl / risk, pnl_pct=pnl / entry * 100))
+        busy_until = exit_time
+    return pd.DataFrame(trades), open_trades
+
+
 # ----------------------------------------------------------------- metrics
 def stats(df, risk_pct=1.0):
     if df.empty:
